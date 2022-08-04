@@ -11,6 +11,18 @@ output +=`<li>${post.title}</li>`;
 document.body.innerHTML=output;
 },1000);
 }
+function deletePost(){
+    return new Promise((resolve, reject) => {
+        setTimeout(()=> {
+            if(posts.values!==0){
+                resolve(posts.pop());
+            }
+            else{
+                reject('Array is empty now');
+            }
+        },1000);
+    });
+}
 function createPost(post){
     return new Promise((resolve,reject) =>{
         setTimeout(() =>{
@@ -29,4 +41,12 @@ function createPost(post){
 
 }
 createPost({title:'Post three',body:'This is post three'})
-.then(getPosts);
+.then(()=>{
+    getPosts()
+    deletePost().then(()=>{
+        getPosts();
+    })
+})
+.catch(err => console.log(err))
+
+//deletePost();
